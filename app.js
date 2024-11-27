@@ -4,6 +4,9 @@ const fs = require("fs");
 const path = require("path");
 const app = express();
 const port = 3000;
+const jwt = require('jsonwebtoken');
+const SECRET_KEY = "CLAVE ULTRA SECRETA";
+
 
 app.use(cors());
 
@@ -12,6 +15,27 @@ app.use(express.json());
 app.get("/", (req, res) => {
     res.send("<h1>Bienvenid@ al servidor</h1>");
 });
+
+app.post("/login", (req, res) => {
+    const { username, password } = req.body;
+    if (username === "admin" && password === "admin") {
+      const token = jwt.sign({ username }, SECRET_KEY);
+      res.status(200).json({ token });
+    } else {
+      res.status(401).json({ message: "Usuario y/o contraseña incorrecto" });
+    }
+  });
+
+  // Middleware que autoriza a realizar peticiones a /people
+app.use("/people", (req, res, next) => {
+    try {
+      const decoded = jwt.verify(req.headers["access-token"], SECRET_KEY);
+      console.log(decoded);
+      next();
+    } catch (err) {
+      res.status(401).json({ message: "Usuario no autorizado" });
+    }
+  });
 
 // Permite el acceso a los archivos almacenados en una carpeta específica del servidor.
 app.use('/API', express.static(path.join(__dirname, 'API')));
