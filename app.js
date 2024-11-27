@@ -7,7 +7,6 @@ const port = 3000;
 const jwt = require('jsonwebtoken');
 const SECRET_KEY = "CLAVE ULTRA SECRETA";
 
-
 app.use(cors());
 
 app.use(express.json());
@@ -23,17 +22,6 @@ app.post("/login", (req, res) => {
       res.status(200).json({ token });
     } else {
       res.status(401).json({ message: "Usuario y/o contraseña incorrecto" });
-    }
-  });
-
-  // Middleware que autoriza a realizar peticiones a /people
-app.use("/people", (req, res, next) => {
-    try {
-      const decoded = jwt.verify(req.headers["access-token"], SECRET_KEY);
-      console.log(decoded);
-      next();
-    } catch (err) {
-      res.status(401).json({ message: "Usuario no autorizado" });
     }
   });
 
