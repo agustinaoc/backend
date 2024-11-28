@@ -25,6 +25,17 @@ app.post("/login", (req, res) => {
     }
   });
 
+// Middleware
+app.use("/people", (req, res, next) => {
+    try {
+      const decoded = jwt.verify(req.headers["access-token"], SECRET_KEY);
+      console.log(decoded);
+      next();
+    } catch (err) {
+      res.status(401).json({ message: "Usuario no autorizado" });
+    }
+  });
+
 // Permite el acceso a los archivos almacenados en una carpeta específica del servidor.
 app.use('/API', express.static(path.join(__dirname, 'API')));
 
