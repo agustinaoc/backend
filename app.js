@@ -15,6 +15,7 @@ app.get("/", (req, res) => {
     res.send("<h1>Bienvenid@ al servidor</h1>");
 });
 
+// Autentificar el usuario
 app.post("/login", (req, res) => {
     const { username, password } = req.body;
     if (username === "admin" && password === "admin") {
@@ -26,7 +27,7 @@ app.post("/login", (req, res) => {
   });
 
 // Middleware
-app.use("/people", (req, res, next) => {
+app.use("/API", (req, res, next) => {
     try {
       const decoded = jwt.verify(req.headers["access-token"], SECRET_KEY);
       console.log(decoded);
@@ -39,7 +40,7 @@ app.use("/people", (req, res, next) => {
 // Permite el acceso a los archivos almacenados en una carpeta específica del servidor.
 app.use('/API', express.static(path.join(__dirname, 'API')));
 
-// Accede a carpetas dentro de APIdata
+// Accede a carpetas dentro de API
 app.get("/API/:folder", (req, res) => {
     let folder = req.params.folder;
     const folderPath = path.join(__dirname, 'API', folder);
@@ -52,9 +53,10 @@ app.get("/API/:folder", (req, res) => {
     })
 });
 
+// Accede a los archivos dentro de las carpetas
 app.get("/API/:folder/:file", (req, res) => {
-    let folder = req.params.folder;
-    let file = req.params.file;
+    const folder = req.params.folder;
+    const file = req.params.file;
     const folderPath = path.join(__dirname, 'API', folder, file);
     fs.readdir(folderPath, (err, files) => {
         if (err) {
