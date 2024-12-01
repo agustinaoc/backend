@@ -75,9 +75,9 @@ app.get("/API/:folder/:file", (req, res) => {
     })
 })
 
-//
+// Para subir la información de los productos a la base de datos
 app.post('/cart', (req, res) => {
-  const productos = req.body; // Aquí esperamos un array de productos
+  const products = req.body; // Aquí se recibe un array de productos
   const token = req.headers["access-token"];
 
   if (!token) {
@@ -85,7 +85,7 @@ app.post('/cart', (req, res) => {
   }
 
   try {
-    // Iniciamos la transacción en MariaDB
+
     db.beginTransaction((err) => {
       if (err) {
         return res.status(500).json({ error: 'Error al iniciar la transacción' });
@@ -97,7 +97,7 @@ app.post('/cart', (req, res) => {
       `;
 
       // Construimos los valores para la consulta SQL
-      const values = productos.map(product => [
+      const values = products.map(product => [
         product.user,
         product.productName,
         product.productCost,
@@ -129,7 +129,6 @@ app.post('/cart', (req, res) => {
     res.status(401).json({ message: "Token inválido o expirado" });
   }
 });
-
 
 // Inicia el servidor para que escuche peticiones
 app.listen(port, () => {
