@@ -17,7 +17,7 @@ const db = mysql.createConnection({
   host: 'localhost',
   user: 'root',
   password: '', // Aquí va la contraseña
-  database: 'ecommerce', // Nombre de la base de datos
+  database: 'ecommerce',
 });
 
 app.get("/", (req, res) => {

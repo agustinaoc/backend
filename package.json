@@ -1,21 +1,26 @@
 {
-  "name": "entrega8",
+  "name": "emercado-api",
   "version": "1.0.0",
+  "description": "ecommerce-api",
   "main": "app.js",
   "scripts": {
     "start": "node app.js",
     "dev": "nodemon app.js",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "stop": "kill-port 3000"
   },
   "author": "",
   "license": "ISC",
-  "description": "",
   "dependencies": {
     "cors": "^2.8.5",
     "express": "^4.21.1",
+    "fs": "^0.0.1-security",
     "jsonwebtoken": "^9.0.2",
-    "mariadb": "^3.4.0",
     "mysql2": "^3.11.5",
-    "nodemon": "^3.1.7"
+    "nodemon": "^3.1.7",
+    "path": "^0.12.7"
+  },
+  "devDependencies": {
+    "kill-port": "^2.0.1"
   }
 }
