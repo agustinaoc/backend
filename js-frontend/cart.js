@@ -157,22 +157,14 @@ document.addEventListener("DOMContentLoaded", () => {
 
 // Llamada inicial a updateCosts
   updateCosts();
-});
 
-const metodoPagoInputs = document.querySelectorAll('input[name="metodoPago"]');
-const formCredito = document.getElementById('formCredito');
-const formTransferencia = document.getElementById('formTransferencia');
-
-document.addEventListener('DOMContentLoaded', function () {
     /* Obtener los radio buttons */
     let creditoRadio = document.getElementById('credito');
     let debitoRadio = document.getElementById('debito');
 
-
     /* Obtener los formularios */
     let debitoForm = document.getElementById('debitoForm');
     let creditoForm = document.getElementById('creditoForm');
-
 
     /* Funcion para mostrar el formulario correcto segun el tipo de pago seleccionado */
     function mostrarFormulario() {
