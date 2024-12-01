@@ -193,7 +193,28 @@ document.addEventListener('DOMContentLoaded', function () {
     let finalizarCompraBtn = document.getElementById('finalizarCompra');
  
     finalizarCompraBtn.addEventListener('click', function () {
+      let email = localStorage.getItem("email");
+      const purchaseData = cart.map(product => ({
+        user: email,
+        productName: product.name,
+        productCost: product.cost,
+        productCount: product.cantidad,
+      }));
         if (validarFormulario()) {
+          fetch("http://localhost:3000/cart", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "access-token": token
+            },
+            body: JSON.stringify(purchaseData) // Envía todos los productos
+          })
+            .then((response) => {
+              if (!response.ok) {
+                throw new Error(`Error ${response.status}: ${response.statusText}`);
+              }
+              return response.json();
+            })
             Swal.fire({
                 text: 'Compra exitosa',
                 icon: 'success',
@@ -242,7 +263,6 @@ document.addEventListener('DOMContentLoaded', function () {
           errorMessage = 'Por favor, complete los campos del método de pago seleccionado';
       }
 
-
       if (!valid) {
           Swal.fire({
               text: errorMessage,
@@ -250,10 +270,8 @@ document.addEventListener('DOMContentLoaded', function () {
               confirmButtonText: 'Volver a intentar'
           });
       }
- 
         return valid;
     }
-
 
     /* Funcion para validar los campos del metodo de pago */
     function validarCamposPago(campos) {
@@ -266,7 +284,6 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         return camposVacios.length === 0;
     }
-
 
     function limpiarCampos(campos) {
       campos.forEach(campoId => {
